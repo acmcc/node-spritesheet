@@ -13,8 +13,10 @@
     "dependencies": {
         "async": "~0.1.22",
         "q-fs": "~0.1.32",
-        "grunt-contrib": "~0.2.0",
-        "grunt-lib-contrib": "~0.3.0",
         "underscore": "~1.4.2"
+    },
+    "devDependencies": {
+        "grunt": "~0.4.1",
+        "grunt-contrib": "~0.6.1"
     }
 }
