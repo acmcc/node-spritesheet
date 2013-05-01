@@ -8,6 +8,7 @@ class Style
     @pixelRatio = options.pixelRatio || 1
     
     @resolveImageSelector = options.resolveImageSelector if options.resolveImageSelector
+    @resolveImagePrefix = options.resolveImagePrefix if options.resolveImagePrefix
 
   css: ( selector, attributes ) ->
     "#{ selector } {\n#{ @cssStyle( attributes ) };\n}\n"
@@ -20,6 +21,9 @@ class Style
   
   resolveImageSelector: ( name ) ->
     name
+
+  resolveImagePrefix: ->
+    ''
   
   generate: ( options ) ->
     if @pixelRatio < 2
@@ -40,8 +44,9 @@ class Style
         ]
         image.style = @cssStyle attr
         image.selector = @resolveImageSelector( image.name, image.path )
+        prefix = @resolveImagePrefix( image.name, image.path )
 
-        styles.push @css( [ @selector, image.selector ].join( '.' ), attr )
+        styles.push @css( prefix + [ @selector, image.selector ].join( '.' ), attr )
       
       styles.push ""
       css = styles.join "\n"
@@ -68,14 +73,5 @@ class Style
   
   comment: ( comment ) ->
     @cssComment comment
-    
-  wrapMediaQuery: ( css ) ->
-    "@media\n
-(min--moz-device-pixel-ratio: #{ @pixelRatio }),\n
-(-o-min-device-pixel-ratio: #{ @pixelRatio }/1),\n
-(-webkit-min-device-pixel-ratio: #{ @pixelRatio }),\n
-(min-device-pixel-ratio: #{ @pixelRatio }) {\n
-#{ css }
-}\n"
   
 module.exports = Style
