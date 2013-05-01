@@ -3,6 +3,7 @@ path = require( "path" )
 class Style
 
   constructor: ( options ) ->
+    @layout = options.layout
     @selector = options.selector
     @pixelRatio = options.pixelRatio || 1
     
@@ -21,32 +22,48 @@ class Style
     name
   
   generate: ( options ) ->
-    { imagePath, relativeImagePath, images, pixelRatio } = options
+    if @pixelRatio < 2
+      { imagePath, relativeImagePath, images, pixelRatio } = options
+
+      @pixelRatio = pixelRatio || 1
     
-    @pixelRatio = pixelRatio || 1
-  
-    styles = [
-      @css @selector, [
-        "  background: url( '#{ relativeImagePath }' ) no-repeat"
+      styles = [
+        @css @selector, [
+          "  background: url( '#{ relativeImagePath }' ) no-repeat"
+        ]
       ]
-    ]
-    for image in images
-      attr = [
-        "  width: #{ image.cssw }px"
-        "  height: #{ image.cssh }px"
-        "  background-position: #{ -image.cssx }px #{ -image.cssy }px"
-      ]
-      image.style = @cssStyle attr
-      image.selector = @resolveImageSelector( image.name, image.path )
+      for image in images
+        attr = [
+          "  width: #{ image.cssw }px"
+          "  height: #{ image.cssh }px"
+          "  background-position: #{ -image.cssx }px #{ -image.cssy }px"
+        ]
+        image.style = @cssStyle attr
+        image.selector = @resolveImageSelector( image.name, image.path )
+
+        styles.push @css( [ @selector, image.selector ].join( '.' ), attr )
       
-      styles.push @css( [ @selector, image.selector ].join( '.' ), attr )
-    
-    styles.push ""
-    css = styles.join "\n"
-    
-    if pixelRatio > 1
-      css = @wrapMediaQuery( css )
-  
+      styles.push ""
+      css = styles.join "\n"
+    else
+      spriteHeight = options.layout.height / @pixelRatio
+      spriteWidth = options.layout.width / @pixelRatio
+      css = """
+        @media
+          (min--moz-device-pixel-ratio: #{@pixelRatio}),
+          (-o-min-device-pixel-ratio: #{@pixelRatio}/1),
+          (-webkit-min-device-pixel-ratio: #{@pixelRatio}),
+          (min-device-pixel-ratio: #{@pixelRatio}) {
+            .sprite {
+              background: url( '#{options.relativeImagePath}' ) no-repeat;
+              -moz-background-size: #{spriteWidth}px #{spriteHeight}px;
+              -ie-background-size: #{spriteWidth}px #{spriteHeight}px;
+              -o-background-size: #{spriteWidth}px #{spriteHeight}px;
+              -webkit-background-size: #{spriteWidth}px #{spriteHeight}px;
+              background-size: #{spriteWidth}px #{spriteHeight}px;
+            }
+          }
+      """
     return css
   
   comment: ( comment ) ->

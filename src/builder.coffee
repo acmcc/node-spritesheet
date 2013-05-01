@@ -126,6 +126,7 @@ class SpriteSheetConfiguration
     throw "no selector specified" if !options.selector
     
     @images = []
+    @options = options
     @filter = options.filter
     @outputDirectory = path.normalize options.outputDirectory
     
@@ -213,6 +214,7 @@ class SpriteSheetConfiguration
       relativeImagePath: relativeImagePath
       images: @images
       pixelRatio: @pixelRatio
+      layout: @layout
 
   createSprite: ( callback ) =>
     ImageMagick.composite(
