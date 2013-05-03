@@ -59,7 +59,7 @@ class SpriteSheetBuilder
       @outputStyleDirectoryPath   = path.dirname( @outputStyleFilePath )
 
   addConfiguration: ( name, options ) ->
-    config = _.extend @options, options,
+    config = _.extend {}, @options, options,
       name: name,
       outputStyleFilePath: @outputStyleFilePath
       outputStyleDirectoryPath: @outputStyleDirectoryPath

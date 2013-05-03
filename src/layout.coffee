@@ -3,11 +3,12 @@ class Layout
   layout: ( images, options = {} ) ->
   
     return width: 0, height: 0 if !images || !images.length
-  
-    hpadding = options.hpadding || 0
-    vpadding = options.vpadding || 0
-    hmargin  = options.hmargin  || 0
-    vmargin  = options.vmargin  || 0
+
+    pr = options.pixelRatio || 1
+    hpadding = (options.hpadding || 0) * pr
+    vpadding = (options.vpadding || 0) * pr
+    hmargin  = (options.hmargin  || 0) * pr
+    vmargin  = (options.vmargin  || 0) * pr
   
     for i in images
       i.w = i.width  + ( 2 * hpadding ) + ( 2 * hmargin )
