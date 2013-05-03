@@ -32,7 +32,7 @@ class ImageMagick
     command = "
       convert
       -size #{ width }x#{ height }
-      canvas:transparent
+      xc:transparent
       -alpha transparent
       #{ filepath }
     "

@@ -1,14 +1,13 @@
 {
     "name": "acmcc-node-spritesheet",
     "description": "Sprite sheet generator for node.js",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "author": {
         "name": "Alexander McCormmach",
         "email": "alexander+npm@mccormmach.name"
     },
     "main": "./index",
     "scripts": {
-      "install": "./scripts/imagemagick.sh",
       "prepublish": "grunt"
     },
     "dependencies": {
