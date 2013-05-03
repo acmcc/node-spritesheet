@@ -1,6 +1,6 @@
 fs            = require( 'fs' )
 path          = require( 'path' )
-qfs           = require( 'q-fs' )
+qfs           = require( 'q-io/fs' )
 exec          = require( 'child_process' ).exec
 async         = require( 'async' )
 _             = require( "underscore" )
